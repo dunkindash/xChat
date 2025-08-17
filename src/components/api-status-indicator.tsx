@@ -84,7 +84,7 @@ export function ApiStatusIndicator() {
 
     // Listen for storage changes (when API key is updated)
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "xai_api_key") {
+      if (e.key === LOCAL_STORAGE_KEY) {
         checkApiStatus();
       }
     };
