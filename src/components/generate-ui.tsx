@@ -47,71 +47,119 @@ export function GenerateUI() {
   }
 
   return (
-    <Card className="flex h-[70vh] w-full flex-col overflow-hidden">
-      <div className="flex flex-1 gap-6 p-4 md:flex-row flex-col">
-        <div className="flex w-full md:w-1/2 flex-col gap-3">
-          <Textarea placeholder="Prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <span className="min-w-[70px]">Model</span>
-              <Select value={model} onValueChange={setModel}>
-                <SelectTrigger className="w-[220px]"><SelectValue placeholder="Model" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="grok-2-image">grok-2-image</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <span className="min-w-[70px]">Count</span>
-              <div className="w-[220px]">
-                <Slider min={1} max={10} step={1} value={[count]} onValueChange={(v) => setCount(v[0] ?? 1)} />
+    <Card className="flex min-h-[70vh] max-h-[80vh] w-full flex-col overflow-hidden">
+      <div className="flex flex-1 gap-6 p-6 md:flex-row flex-col min-h-0">
+        <div className="flex w-full md:w-1/2 flex-col gap-4">
+          <div className="space-y-4">
+            <Textarea 
+              placeholder="Describe the image you want to generate..."
+              value={prompt} 
+              onChange={(e) => setPrompt(e.target.value)}
+              className="min-h-[120px]"
+            />
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="font-medium min-w-[70px]">Model</span>
+                <Select value={model} onValueChange={setModel}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Model" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="grok-2-image">Grok Image 2</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-              <span className="tabular-nums">{count}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="min-w-[70px]">Format</span>
-              <Select
-                value={format}
-                onValueChange={(v) => {
-                  if (v === "url" || v === "b64_json") setFormat(v);
-                }}
-              >
-                <SelectTrigger className="w-[220px]"><SelectValue placeholder="Format" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="url">url</SelectItem>
-                  <SelectItem value="b64_json">b64_json</SelectItem>
-                </SelectContent>
-              </Select>
+              
+              <div className="flex items-center gap-3">
+                <span className="font-medium min-w-[70px]">Count</span>
+                <div className="w-[120px]">
+                  <Slider 
+                    min={1} 
+                    max={10} 
+                    step={1} 
+                    value={[count]} 
+                    onValueChange={(v) => setCount(v[0] ?? 1)}
+                    className="cursor-pointer"
+                  />
+                </div>
+                <span className="tabular-nums font-mono text-sm bg-muted px-2 py-1 rounded">
+                  {count}
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <span className="font-medium min-w-[70px]">Format</span>
+                <Select
+                  value={format}
+                  onValueChange={(v) => {
+                    if (v === "url" || v === "b64_json") setFormat(v);
+                  }}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Format" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="url">URL</SelectItem>
+                    <SelectItem value="b64_json">Base64</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex w-full md:w-1/2 flex-col gap-3">
-          <div className="grid grid-cols-2 gap-3">
-            {images.map((g, i) => {
-              const src = asSrc(g);
-              return src ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img key={i} src={src} alt={`generated-${i}`} className="aspect-square w-full rounded-md border bg-muted object-cover" />
-              ) : null;
-            })}
+        
+        <div className="flex w-full md:w-1/2 flex-col gap-4">
+          <div className="flex-1 min-h-0">
+            {images.length > 0 ? (
+              <div className="grid grid-cols-2 gap-3 h-full overflow-auto">
+                {images.map((g, i) => {
+                  const src = asSrc(g);
+                  return src ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img 
+                      key={i} 
+                      src={src} 
+                      alt={`generated-${i}`} 
+                      className="aspect-square w-full rounded-lg border bg-muted object-cover shadow-sm" 
+                    />
+                  ) : null;
+                })}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-full rounded-lg border-2 border-dashed bg-muted/50 text-muted-foreground">
+                <div className="text-center space-y-2">
+                  <div className="text-2xl">🎨</div>
+                  <div className="text-sm">Generated images will appear here</div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
-      <div className="border-t p-3 flex items-center justify-end gap-2">
-        <Button
-          variant="secondary"
-          onClick={() => setImages([])}
-          disabled={!images.length || loading}
-        >
-          Clear images
-        </Button>
-        <Button onClick={generate} disabled={loading || !prompt.trim()}>
-          {loading ? "Generating..." : "Generate"}
-        </Button>
+      
+      <div className="border-t bg-card/50 p-4 space-y-4">
+        <div className="flex items-center justify-between gap-4">
+          <div className="text-xs text-muted-foreground">
+            {images.length > 0 && `${images.length} image${images.length > 1 ? 's' : ''} generated`}
+          </div>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setImages([])}
+              disabled={!images.length || loading}
+            >
+              Clear All
+            </Button>
+            <Button 
+              onClick={generate} 
+              disabled={loading || !prompt.trim()}
+              className="min-w-[100px]"
+            >
+              {loading ? "Generating..." : "Generate"}
+            </Button>
+          </div>
+        </div>
       </div>
     </Card>
   );
 }
-
-

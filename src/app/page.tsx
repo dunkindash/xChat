@@ -1,6 +1,4 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card } from "@/components/ui/card";
-import { ApiKeyManager } from "@/components/api-key";
 import { ChatUI } from "@/components/chat-ui";
 import { VisionUI } from "@/components/vision-ui";
 import { GenerateUI } from "@/components/generate-ui";
@@ -13,9 +11,6 @@ export default function Home() {
           <h1 className="text-2xl font-semibold tracking-tight">xChat Playground</h1>
           <p className="text-muted-foreground">Test xAI chat and vision with your API key.</p>
         </div>
-        <Card className="mb-6 p-4">
-          <ApiKeyManager />
-        </Card>
         <Tabs defaultValue="chat" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="chat">Chat</TabsTrigger>
