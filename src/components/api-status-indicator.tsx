@@ -80,7 +80,8 @@ export function ApiStatusIndicator() {
     checkApiStatus();
 
     // Set up periodic checks every 30 seconds
-    const interval = setInterval(checkApiStatus, 30000);
+    // Set up periodic checks every 60 seconds
+    const interval = setInterval(checkApiStatus, 60000);
 
     // Listen for storage changes (when API key is updated)
     const handleStorageChange = (e: StorageEvent) => {
