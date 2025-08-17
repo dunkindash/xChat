@@ -28,7 +28,7 @@ export function ThemeProvider({
   storageKey = "xchat-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = React.useState<Theme>(
+  const [theme, setThemeState] = React.useState<Theme>(
     () => (typeof window !== "undefined" && (localStorage.getItem(storageKey) as Theme)) || defaultTheme
   )
 
@@ -53,7 +53,7 @@ export function ThemeProvider({
     theme,
     setTheme: (newTheme: Theme) => {
       localStorage.setItem(storageKey, newTheme)
-      setTheme(newTheme)
+      setThemeState(newTheme)
     },
   }
 
