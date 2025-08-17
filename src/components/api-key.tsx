@@ -23,6 +23,8 @@ export function ApiKeyManager({ onChange }: { onChange?: (key: string | null) =>
       localStorage.setItem(LOCAL_STORAGE_KEY, apiKey.trim());
       setSaved(true);
       onChange?.(apiKey.trim());
+      // Dispatch custom event for API key change
+      window.dispatchEvent(new Event("apiKeyChanged"));
       setTimeout(() => setSaved(false), 1000);
     }
   }
@@ -31,6 +33,8 @@ export function ApiKeyManager({ onChange }: { onChange?: (key: string | null) =>
     localStorage.removeItem(LOCAL_STORAGE_KEY);
     setApiKey("");
     onChange?.(null);
+    // Dispatch custom event for API key change
+    window.dispatchEvent(new Event("apiKeyChanged"));
   }
 
   return (
@@ -55,5 +59,3 @@ export function getStoredApiKey(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem(LOCAL_STORAGE_KEY);
 }
-
-
