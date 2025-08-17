@@ -66,63 +66,97 @@ export function VisionUI() {
   }
 
   return (
-    <Card className="flex h-[70vh] w-full flex-col overflow-hidden">
-      <div className="flex flex-1 gap-6 p-4 md:flex-row flex-col">
-        <div className="flex w-full md:w-1/2 flex-col gap-3">
-          <Input ref={fileRef} type="file" accept="image/*" multiple onChange={onFileChange} />
-          <Textarea
-            placeholder="Prompt"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-          />
-          <div className="grid grid-cols-2 gap-3">
-            {imagePreviews.length ? (
-              imagePreviews.map((src, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img key={i} alt={`preview-${i}`} src={src} className="aspect-square w-full rounded-md border bg-muted object-contain" />
-              ))
-            ) : (
-              <div className="col-span-2 flex aspect-square items-center justify-center rounded-md border bg-muted text-sm text-muted-foreground">
-                Select image(s) to preview
-              </div>
-            )}
+    <Card className="flex min-h-[70vh] max-h-[80vh] w-full flex-col overflow-hidden">
+      <div className="flex flex-1 gap-6 p-6 md:flex-row flex-col min-h-0">
+        <div className="flex w-full md:w-1/2 flex-col gap-4">
+          <div className="space-y-3">
+            <Input ref={fileRef} type="file" accept="image/*" multiple onChange={onFileChange} />
+            <Textarea
+              placeholder="What would you like to know about the image(s)?"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              className="min-h-[80px]"
+            />
+          </div>
+          <div className="flex-1 min-h-0">
+            <div className="grid grid-cols-2 gap-3 h-full">
+              {imagePreviews.length ? (
+                imagePreviews.map((src, i) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img 
+                    key={i} 
+                    alt={`preview-${i}`} 
+                    src={src} 
+                    className="aspect-square w-full rounded-lg border bg-muted object-contain shadow-sm" 
+                  />
+                ))
+              ) : (
+                <div className="col-span-2 flex aspect-square items-center justify-center rounded-lg border-2 border-dashed bg-muted/50 text-sm text-muted-foreground">
+                  <div className="text-center space-y-2">
+                    <div className="text-lg">📸</div>
+                    <div>Select image(s) to preview</div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-        <div className="flex w-full md:w-1/2 flex-col gap-3">
-          <Textarea value={answer} readOnly className="flex-1" />
+        <div className="flex w-full md:w-1/2 flex-col gap-4">
+          <div className="flex-1 min-h-0">
+            <Textarea 
+              value={answer} 
+              readOnly 
+              placeholder="Analysis results will appear here..."
+              className="h-full min-h-[300px] resize-none"
+            />
+          </div>
         </div>
       </div>
-      <div className="border-t p-3 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <span className="min-w-[60px]">Model</span>
+      <div className="border-t bg-card/50 p-4 space-y-4">
+        <div className="flex flex-wrap items-center gap-6 text-sm">
+          <div className="flex items-center gap-3">
+            <span className="font-medium min-w-[60px]">Model</span>
             <Select value={model} onValueChange={setModel}>
-              <SelectTrigger className="w-[200px]"><SelectValue placeholder="Model" /></SelectTrigger>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Model" />
+              </SelectTrigger>
               <SelectContent>
-                <SelectItem value="grok-2v">grok-2v</SelectItem>
-                <SelectItem value="grok-2v-mini">grok-2v-mini</SelectItem>
+                <SelectItem value="grok-2v">Grok Vision 2</SelectItem>
+                <SelectItem value="grok-2v-mini">Grok Vision 2 Mini</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <div className="flex items-center gap-2">
-            <span>High detail</span>
+          <div className="flex items-center gap-3">
+            <span className="font-medium">High Detail</span>
             <Switch checked={detailHigh} onCheckedChange={setDetailHigh} />
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="secondary" onClick={() => {
-            setImagePreviews([]);
-            try { if (fileRef.current) (fileRef.current as HTMLInputElement).value = ""; } catch {}
-          }} disabled={!imagePreviews.length}>
-            Clear images
-          </Button>
-          <Button onClick={analyze} disabled={loading || !imagePreviews.length}>
-            {loading ? "Analyzing..." : "Analyze"}
-          </Button>
+        <div className="flex items-center justify-between gap-4">
+          <div className="text-xs text-muted-foreground">
+            {imagePreviews.length > 0 && `${imagePreviews.length} image${imagePreviews.length > 1 ? 's' : ''} selected`}
+          </div>
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setImagePreviews([]);
+                setAnswer("");
+                try { if (fileRef.current) (fileRef.current as HTMLInputElement).value = ""; } catch {}
+              }} 
+              disabled={!imagePreviews.length}
+            >
+              Clear All
+            </Button>
+            <Button 
+              onClick={analyze} 
+              disabled={loading || !imagePreviews.length}
+              className="min-w-[100px]"
+            >
+              {loading ? "Analyzing..." : "Analyze"}
+            </Button>
+          </div>
         </div>
       </div>
     </Card>
   );
 }
-
-
