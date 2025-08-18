@@ -10,8 +10,8 @@ import { TypingIndicator } from "@/components/typing-indicator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { getStoredApiKey, ApiKeyManager } from "@/components/api-key";
-import { Send, Settings, Sparkles, User, Bot, Copy, Check, Key } from "lucide-react";
+import { getStoredApiKey } from "@/components/api-key";
+import { Send, Settings, Sparkles, User, Bot, Copy, Check } from "lucide-react";
 
 type ChatMessage = {
   role: "user" | "assistant" | "system";
@@ -230,16 +230,7 @@ export function ChatUI() {
 
         {/* Settings Panel */}
         {showSettings && (
-          <div className="border-t bg-card/50 backdrop-blur-sm p-4 space-y-6">
-            {/* API Key Section */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Key className="h-4 w-4 text-primary" />
-                <span className="font-medium text-sm">API Key</span>
-              </div>
-              <ApiKeyManager />
-            </div>
-            
+          <div className="border-t bg-card/50 backdrop-blur-sm p-4 space-y-4">
             {/* Model & Temperature Settings */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">

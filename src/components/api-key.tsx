@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const LOCAL_STORAGE_KEY = "xai_api_key";
+export const LOCAL_STORAGE_KEY = "xai_api_key";
 
 export function ApiKeyManager({ onChange }: { onChange?: (key: string | null) => void }) {
   const [apiKey, setApiKey] = useState<string>("");
