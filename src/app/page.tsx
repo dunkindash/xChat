@@ -2,6 +2,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChatUI } from "@/components/chat-ui";
 import { VisionUI } from "@/components/vision-ui";
 import { GenerateUI } from "@/components/generate-ui";
+import { SettingsPage } from "@/components/settings-page";
+import { ApiExplorer } from "@/components/api-explorer";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ApiStatusIndicator } from "@/components/api-status-indicator";
 
@@ -20,10 +22,12 @@ export default function Home() {
           </div>
         </div>
         <Tabs defaultValue="chat" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="chat">Chat</TabsTrigger>
             <TabsTrigger value="vision">Vision</TabsTrigger>
             <TabsTrigger value="generate">Generate</TabsTrigger>
+            <TabsTrigger value="api-explorer">API Explorer</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
           <TabsContent value="chat" className="mt-4">
             <ChatUI />
@@ -33,6 +37,12 @@ export default function Home() {
           </TabsContent>
           <TabsContent value="generate" className="mt-4">
             <GenerateUI />
+          </TabsContent>
+          <TabsContent value="api-explorer" className="mt-4">
+            <ApiExplorer />
+          </TabsContent>
+          <TabsContent value="settings" className="mt-4">
+            <SettingsPage />
           </TabsContent>
         </Tabs>
       </div>

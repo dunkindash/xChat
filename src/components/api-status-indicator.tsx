@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { getStoredApiKey } from "@/components/api-key";
+import { getStoredApiKey, LOCAL_STORAGE_KEY } from "@/components/api-key";
 
 type ApiStatus = "checking" | "connected" | "no-key" | "invalid" | "error";
 
@@ -69,7 +69,7 @@ export function ApiStatusIndicator() {
         setStatus("error");
         setMessage("Failed to check API status");
       }
-    } catch (error) {
+    } catch {
       setStatus("error");
       setMessage("Network error");
     }
