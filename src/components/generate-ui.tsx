@@ -19,12 +19,19 @@ export function GenerateUI() {
   const [loading, setLoading] = useState<boolean>(false);
 
   async function generate() {
-    const apiKey = getStoredApiKey();
-    if (!apiKey) return alert("Please enter your xAI API key first.");
     if (!prompt.trim()) return alert("Enter a prompt.");
+    
     setLoading(true);
     setImages([]);
+    
     try {
+      const apiKey = await getStoredApiKey();
+      if (!apiKey) {
+        alert("Please enter your xAI API key first.");
+        setLoading(false);
+        return;
+      }
+      
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-xai-api-key": apiKey },

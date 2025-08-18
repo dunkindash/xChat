@@ -55,7 +55,7 @@ export function ApiStatusIndicator() {
     setStatus("checking");
     
     try {
-      const apiKey = getStoredApiKey();
+      const apiKey = await getStoredApiKey();
       
       const response = await fetch("/api/health", {
         headers: apiKey ? { "x-xai-api-key": apiKey } : {},

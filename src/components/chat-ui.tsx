@@ -36,16 +36,20 @@ export function ChatUI() {
 
   async function send() {
     if (!canSend) return;
-    const apiKey = getStoredApiKey();
-    if (!apiKey) {
-      alert("Please enter your xAI API key first.");
-      return;
-    }
-    const newMessages = [...messages, { role: "user", content: input.trim() } as ChatMessage];
-    setMessages(newMessages);
-    setInput("");
+    
     setLoading(true);
     try {
+      const apiKey = await getStoredApiKey();
+      if (!apiKey) {
+        alert("Please enter your xAI API key first.");
+        setLoading(false);
+        return;
+      }
+      
+      const newMessages = [...messages, { role: "user", content: input.trim() } as ChatMessage];
+      setMessages(newMessages);
+      setInput("");
+      
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: {

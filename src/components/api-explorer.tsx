@@ -45,7 +45,7 @@ export function ApiExplorer() {
   const [activeTab, setActiveTab] = useState("request");
 
   const executeRequest = async () => {
-    const apiKey = getStoredApiKey();
+    const apiKey = await getStoredApiKey();
     if (!apiKey) {
       setError("Please enter your xAI API key in the Settings tab first.");
       return;

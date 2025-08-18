@@ -33,18 +33,22 @@ export function VisionUI() {
   }
 
   async function analyze() {
-    const apiKey = getStoredApiKey();
-    if (!apiKey) {
-      alert("Please enter your xAI API key first.");
-      return;
-    }
     if (!imagePreviews.length) {
       alert("Please select one or more images first.");
       return;
     }
+    
     setLoading(true);
     setAnswer("");
+    
     try {
+      const apiKey = await getStoredApiKey();
+      if (!apiKey) {
+        alert("Please enter your xAI API key first.");
+        setLoading(false);
+        return;
+      }
+      
       const res = await fetch("/api/vision", {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-xai-api-key": apiKey },
