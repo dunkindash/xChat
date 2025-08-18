@@ -337,8 +337,8 @@ export function ApiExplorer() {
 
           {/* Right Panel - Request/Response */}
           <div className="space-y-6">
-            <Card className="h-[600px] flex flex-col">
-              <CardHeader className="pb-3">
+            <Card className="h-[700px] flex flex-col overflow-hidden">
+              <CardHeader className="pb-3 flex-shrink-0">
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2">
                     <MessageSquare className="h-5 w-5" />
@@ -352,96 +352,102 @@ export function ApiExplorer() {
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="flex-1 min-h-0">
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="request">Request</TabsTrigger>
-                    <TabsTrigger value="response">Response</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="request" className="flex-1 mt-4">
-                    <div className="space-y-3 h-full">
-                      <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Request Body</Label>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => copyToClipboard(requestJson, "request")}
-                          className="flex items-center gap-1"
-                        >
-                          {copiedRequest ? (
-                            <Check className="h-3 w-3" />
-                          ) : (
-                            <Copy className="h-3 w-3" />
-                          )}
-                          {copiedRequest ? "Copied!" : "Copy"}
-                        </Button>
-                      </div>
-                      <ScrollArea className="h-[450px] w-full rounded border">
-                        <pre className="p-4 text-sm">
-                          <code>{requestJson}</code>
-                        </pre>
-                      </ScrollArea>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="response" className="flex-1 mt-4">
-                    <div className="space-y-3 h-full">
-                      <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Response</Label>
-                        {(response || error) && (
+              <CardContent className="flex-1 min-h-0 p-0">
+                <div className="h-full flex flex-col px-6 pb-6">
+                  <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+                    <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
+                      <TabsTrigger value="request">Request</TabsTrigger>
+                      <TabsTrigger value="response">Response</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="request" className="flex-1 mt-4 min-h-0">
+                      <div className="h-full flex flex-col space-y-3">
+                        <div className="flex items-center justify-between flex-shrink-0">
+                          <Label className="text-sm font-medium">Request Body</Label>
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => copyToClipboard(
-                              error ? error : JSON.stringify(response, null, 2), 
-                              "response"
-                            )}
+                            onClick={() => copyToClipboard(requestJson, "request")}
                             className="flex items-center gap-1"
                           >
-                            {copiedResponse ? (
+                            {copiedRequest ? (
                               <Check className="h-3 w-3" />
                             ) : (
                               <Copy className="h-3 w-3" />
                             )}
-                            {copiedResponse ? "Copied!" : "Copy"}
+                            {copiedRequest ? "Copied!" : "Copy"}
                           </Button>
-                        )}
-                      </div>
-                      <ScrollArea className="h-[450px] w-full rounded border">
-                        {loading ? (
-                          <div className="flex items-center justify-center h-full">
-                            <div className="flex items-center gap-2 text-muted-foreground">
-                              <div className="w-4 h-4 border-2 border-muted-foreground/30 border-t-muted-foreground rounded-full animate-spin" />
-                              Executing request...
-                            </div>
-                          </div>
-                        ) : error ? (
-                          <div className="p-4">
-                            <div className="flex items-center gap-2 text-red-600 mb-2">
-                              <AlertCircle className="h-4 w-4" />
-                              <span className="font-medium">Error</span>
-                            </div>
-                            <pre className="text-sm text-red-600 whitespace-pre-wrap">
-                              {error}
+                        </div>
+                        <div className="flex-1 min-h-0 rounded border bg-muted/30">
+                          <ScrollArea className="h-full w-full">
+                            <pre className="p-4 text-sm font-mono leading-relaxed">
+                              <code className="text-foreground">{requestJson}</code>
                             </pre>
-                          </div>
-                        ) : response ? (
-                          <pre className="p-4 text-sm">
-                            <code>{JSON.stringify(response, null, 2)}</code>
-                          </pre>
-                        ) : (
-                          <div className="flex items-center justify-center h-full text-muted-foreground">
-                            <div className="text-center">
-                              <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                              <p>Execute a request to see the response</p>
-                            </div>
-                          </div>
-                        )}
-                      </ScrollArea>
-                    </div>
-                  </TabsContent>
-                </Tabs>
+                          </ScrollArea>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="response" className="flex-1 mt-4 min-h-0">
+                      <div className="h-full flex flex-col space-y-3">
+                        <div className="flex items-center justify-between flex-shrink-0">
+                          <Label className="text-sm font-medium">Response</Label>
+                          {(response || error) && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => copyToClipboard(
+                                error ? error : JSON.stringify(response, null, 2), 
+                                "response"
+                              )}
+                              className="flex items-center gap-1"
+                            >
+                              {copiedResponse ? (
+                                <Check className="h-3 w-3" />
+                              ) : (
+                                <Copy className="h-3 w-3" />
+                              )}
+                              {copiedResponse ? "Copied!" : "Copy"}
+                            </Button>
+                          )}
+                        </div>
+                        <div className="flex-1 min-h-0 rounded border bg-muted/30">
+                          <ScrollArea className="h-full w-full">
+                            {loading ? (
+                              <div className="flex items-center justify-center h-full min-h-[400px]">
+                                <div className="flex items-center gap-2 text-muted-foreground">
+                                  <div className="w-4 h-4 border-2 border-muted-foreground/30 border-t-muted-foreground rounded-full animate-spin" />
+                                  Executing request...
+                                </div>
+                              </div>
+                            ) : error ? (
+                              <div className="p-4">
+                                <div className="flex items-center gap-2 text-red-600 mb-2">
+                                  <AlertCircle className="h-4 w-4" />
+                                  <span className="font-medium">Error</span>
+                                </div>
+                                <pre className="text-sm text-red-600 whitespace-pre-wrap font-mono leading-relaxed">
+                                  {error}
+                                </pre>
+                              </div>
+                            ) : response ? (
+                              <pre className="p-4 text-sm font-mono leading-relaxed">
+                                <code className="text-foreground">{JSON.stringify(response, null, 2)}</code>
+                              </pre>
+                            ) : (
+                              <div className="flex items-center justify-center h-full min-h-[400px] text-muted-foreground">
+                                <div className="text-center">
+                                  <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                                  <p className="text-sm">Execute a request to see the response</p>
+                                </div>
+                              </div>
+                            )}
+                          </ScrollArea>
+                        </div>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </div>
               </CardContent>
             </Card>
           </div>
